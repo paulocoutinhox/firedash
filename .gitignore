@@ -22,3 +22,6 @@ yarn-error.log*
 
 # Server
 server/config/data.py
+
+# DB
+db/app.db
