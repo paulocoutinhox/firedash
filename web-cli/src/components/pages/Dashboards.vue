@@ -55,6 +55,9 @@
                 v-model="realtimeOptions.moment.value"
                 @input="onRealtimeMomentChanged"
               >
+                <option value="-5 minute">5 minutes</option>
+                <option value="-30 minute">30 minutes</option>
+                <option value="-1 hour">1 hour</option>
                 <option value="-1 day">1 day</option>
                 <option value="-7 day">7 days</option>
                 <option value="-15 day">15 days</option>
@@ -93,8 +96,8 @@
 </template>
 
 <script>
-import LineChart from "@/components/tiles/LineChart.vue";
-import ALineChart from "@/components/tiles/ALineChart.vue";
+import LineChart from "@/components/widgets/LineChart.vue";
+import ALineChart from "@/components/widgets/ALineChart.vue";
 import { util } from "@/mixins/util";
 
 export default {
@@ -165,7 +168,7 @@ export default {
         },
         interval: 2000,
         moment: {
-          value: "-1 day"
+          value: "-5 minute"
         }
       }
     };
