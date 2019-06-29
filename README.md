@@ -44,9 +44,8 @@ Install all python dependencies:
 
 Configure first time:  
 
-> cd server/config
-> cp data.template.py
-> cp data.py
+> cp server/config/data.template.py server/config/data.py  
+> cp db/app.template.db db/app.db  
 
 Very important: Edit all **[CHANGE-HERE]** texts inside **server/config/data.py** using very secure keys. DON'T let this file with default keys, it is insecure.
 
