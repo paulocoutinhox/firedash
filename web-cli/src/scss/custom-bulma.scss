@@ -1,0 +1,9 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+$primary: #ff4516;
+$link: #ff4516;
+$card-content-padding: 0 !default;
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";

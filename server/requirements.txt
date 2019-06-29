@@ -1,0 +1,12 @@
+flask
+flask_login
+flask_sqlalchemy
+flask_json
+sqlalchemy
+pyjwt
+werkzeug
+requests
+firebase-admin
+elasticsearch
+wtforms
+wtforms_json
