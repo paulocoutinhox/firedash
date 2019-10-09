@@ -95,7 +95,7 @@ Obs:
 Replace **[DEVICE-TOKEN]** by your device token that you can get from control panel using your account.  
 
 
-### Ouput
+### Output
 
 You can capture any amount of data from your Firedash device data table:  
 
@@ -147,13 +147,17 @@ Change server configuration in file **server/config/data.py**.
 
 ## Docker
 
-First, build the firedash image:  
+First, build the Firedash image:  
 
 > docker build -t firedash .  
 
 Second, start the container:  
 
 > docker run -p 5000:5000 -v $(PWD):/app firedash
+
+Third, open in your browser:
+
+> http://localhost:5000
 
 ## Supported By Jetbrains IntelliJ IDEA
 

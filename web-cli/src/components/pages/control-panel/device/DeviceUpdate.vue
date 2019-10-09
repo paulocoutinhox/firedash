@@ -60,7 +60,7 @@ export default {
             this.formData = resp.data.data.device;
             this.isLoading = false;
           } else {
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-danger",
               message: this.getResponseMessage()
@@ -70,7 +70,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$toast.open({
+          this.$buefy.toast.open({
             position: "is-bottom",
             type: "is-danger",
             message: this.getResponseMessage()
@@ -95,7 +95,7 @@ export default {
             this.data = resp.data.data.list;
             this.isLoading = false;
 
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-success",
               message: "Device was updated"
@@ -105,7 +105,7 @@ export default {
           } else {
             this.isLoading = false;
 
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-danger",
               message: this.getResponseMessage(resp.data)
@@ -115,7 +115,7 @@ export default {
         .catch(err => {
           this.isLoading = false;
 
-          this.$toast.open({
+          this.$buefy.toast.open({
             position: "is-bottom",
             type: "is-danger",
             message: this.getResponseMessage()

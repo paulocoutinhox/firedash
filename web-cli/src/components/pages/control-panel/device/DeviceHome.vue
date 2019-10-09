@@ -174,7 +174,7 @@ export default {
               if (resp.data.success) {
                 this.refresh();
 
-                this.$toast.open({
+                this.$buefy.toast.open({
                   position: "is-bottom",
                   type: "is-success",
                   message: "Device was removed!"
@@ -182,7 +182,7 @@ export default {
               } else {
                 this.refresh();
 
-                this.$toast.open({
+                this.$buefy.toast.open({
                   position: "is-bottom",
                   type: "is-danger",
                   message: this.getResponseMessage(resp.data)
@@ -192,7 +192,7 @@ export default {
             .catch(err => {
               this.refresh();
 
-              this.$toast.open({
+              this.$buefy.toast.open({
                 position: "is-bottom",
                 type: "is-danger",
                 message: this.getResponseMessage()
@@ -225,7 +225,7 @@ export default {
           } else {
             this.listData.isLoading = false;
 
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-danger",
               message: this.getResponseMessage(resp.data)
@@ -235,7 +235,7 @@ export default {
         .catch(err => {
           this.listData.isLoading = false;
 
-          this.$toast.open({
+          this.$buefy.toast.open({
             position: "is-bottom",
             type: "is-danger",
             message: this.getResponseMessage()
@@ -243,14 +243,14 @@ export default {
         });
     },
     onDeviceTokenCopySuccess: function(e) {
-      this.$toast.open({
+      this.$buefy.toast.open({
         position: "is-bottom",
         type: "is-success",
         message: "Copied!"
       });
     },
     onDeviceTokenCopyError: function(e) {
-      this.$toast.open({
+      this.$buefy.toast.open({
         position: "is-bottom",
         type: "is-danger",
         message: "Failed to copy text!"

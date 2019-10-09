@@ -83,7 +83,7 @@ export default {
             this.formData = resp.data.data.account;
             this.isLoading = false;
           } else {
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-danger",
               message: this.getResponseMessage()
@@ -93,7 +93,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$toast.open({
+          this.$buefy.toast.open({
             position: "is-bottom",
             type: "is-danger",
             message: this.getResponseMessage()

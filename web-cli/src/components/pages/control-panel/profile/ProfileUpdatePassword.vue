@@ -81,7 +81,7 @@ export default {
           if (resp.data.success) {
             this.isLoading = false;
 
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-success",
               message: "Your password was updated"
@@ -91,7 +91,7 @@ export default {
           } else {
             this.isLoading = false;
 
-            this.$toast.open({
+            this.$buefy.toast.open({
               position: "is-bottom",
               type: "is-danger",
               message: this.getResponseMessage(resp.data)
@@ -101,7 +101,7 @@ export default {
         .catch(err => {
           this.isLoading = false;
 
-          this.$toast.open({
+          this.$buefy.toast.open({
             position: "is-bottom",
             type: "is-danger",
             message: this.getResponseMessage()

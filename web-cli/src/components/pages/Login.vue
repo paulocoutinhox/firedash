@@ -92,7 +92,7 @@ export default {
           this.$router.push("/");
         })
         .catch(err => {
-          this.$toast.open({
+          this.$buefy.toast.open({
             position: "is-bottom",
             type: "is-danger",
             message: this.getResponseMessage(err, "login")
