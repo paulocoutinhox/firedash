@@ -12,10 +12,10 @@ from models.form.account.account_update import AccountUpdateForm
 from utils import response
 from utils.auth import account_token_required
 
-routes_api_account = Blueprint('api_account', __name__)
+routes_api_account = Blueprint("api_account", __name__)
 
 
-@routes_api_account.route('/api/account/create', methods=['POST'])
+@routes_api_account.route("/api/account/create", methods=["POST"])
 @account_token_required
 @as_json
 def action_create(account):
@@ -44,14 +44,12 @@ def action_create(account):
 
         new_account = Account.query.get(new_account.id)
 
-        return response.success(data={
-            'account': new_account.to_dict('create')
-        })
+        return response.success(data={"account": new_account.to_dict("create")})
     else:
         return response.from_form(form)
 
 
-@routes_api_account.route('/api/account/update', methods=['POST'])
+@routes_api_account.route("/api/account/update", methods=["POST"])
 @account_token_required
 @as_json
 def action_update(account):
@@ -81,16 +79,14 @@ def action_update(account):
 
             found_account = Account.query.get(found_account.id)
 
-            return response.success(data={
-                'account': found_account.to_dict('update')
-            })
+            return response.success(data={"account": found_account.to_dict("update")})
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)
 
 
-@routes_api_account.route('/api/account/delete', methods=['POST'])
+@routes_api_account.route("/api/account/delete", methods=["POST"])
 @account_token_required
 @as_json
 def action_delete(account):
@@ -113,14 +109,14 @@ def action_delete(account):
 
                 return response.success()
             else:
-                return response.not_success('not-found')
+                return response.not_success("not-found")
         else:
-            return response.with_validate_error('id', ['Cannot delete this account.'])
+            return response.with_validate_error("id", ["Cannot delete this account."])
     else:
         return response.from_form(form)
 
 
-@routes_api_account.route('/api/account/list', methods=['POST'])
+@routes_api_account.route("/api/account/list", methods=["POST"])
 @account_token_required
 @as_json
 def action_list(account):
@@ -128,14 +124,12 @@ def action_list(account):
         return response.unauthorized()
 
     accounts = Account.query.order_by(Account.created_at.desc()).all()
-    accounts = [r.to_dict('list') for r in accounts]
+    accounts = [r.to_dict("list") for r in accounts]
 
-    return response.success(data={
-        'list': accounts,
-    })
+    return response.success(data={"list": accounts})
 
 
-@routes_api_account.route('/api/account/get', methods=['POST'])
+@routes_api_account.route("/api/account/get", methods=["POST"])
 @account_token_required
 @as_json
 def action_get(account):
@@ -151,16 +145,14 @@ def action_get(account):
         found_account = Account.query.get(form.id.data)
 
         if found_account:
-            return response.success(data={
-                'account': found_account.to_dict('get')
-            })
+            return response.success(data={"account": found_account.to_dict("get")})
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)
 
 
-@routes_api_account.route('/api/account/token', methods=['POST'])
+@routes_api_account.route("/api/account/token", methods=["POST"])
 @account_token_required
 @as_json
 def action_token(account):
@@ -176,10 +168,8 @@ def action_token(account):
         found_account = Account.query.get(form.id.data)
 
         if found_account:
-            return response.success(data={
-                'token': found_account.get_jwt_encoded()
-            })
+            return response.success(data={"token": found_account.get_jwt_encoded()})
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)

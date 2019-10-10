@@ -13,7 +13,9 @@ def random_int_values(amount, min_value, max_value):
     return result
 
 
-def random_datetime_range(start, end, delta=timedelta(seconds=1), dt_format='%Y-%m-%d %H-%M-%S'):
+def random_datetime_range(
+    start, end, delta=timedelta(seconds=1), dt_format="%Y-%m-%d %H-%M-%S"
+):
     result = []
     current = start
 

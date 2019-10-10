@@ -8,16 +8,22 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config.data import config_data
 
-flask = Flask(__name__, template_folder='../../web-cli/dist', static_folder='../../web-cli/dist/static')
+flask = Flask(
+    __name__,
+    template_folder="../../web-cli/dist",
+    static_folder="../../web-cli/dist/static",
+)
 
-flask.config['SQLALCHEMY_DATABASE_URI'] = config_data['database_uri']
-flask.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config_data['database_track_modifications']
-flask.config['TEMPLATES_AUTO_RELOAD'] = config_data['templates_auto_reload']
-flask.config['SESSION_TYPE'] = config_data['server_session_type']
-flask.config['JSON_ADD_STATUS'] = False
-flask.config['DEBUG'] = config_data['debug']
+flask.config["SQLALCHEMY_DATABASE_URI"] = config_data["database_uri"]
+flask.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = config_data[
+    "database_track_modifications"
+]
+flask.config["TEMPLATES_AUTO_RELOAD"] = config_data["templates_auto_reload"]
+flask.config["SESSION_TYPE"] = config_data["server_session_type"]
+flask.config["JSON_ADD_STATUS"] = False
+flask.config["DEBUG"] = config_data["debug"]
 
-flask.secret_key = config_data['secret_key']
+flask.secret_key = config_data["secret_key"]
 
 # flask plugins
 json = FlaskJSON(flask)
@@ -27,18 +33,18 @@ wtforms_json.init()
 db = SQLAlchemy(flask)
 
 # firebase
-if config_data['firebase_enabled']:
-    cred = credentials.Certificate(config_data['firebase_credential_path'])
+if config_data["firebase_enabled"]:
+    cred = credentials.Certificate(config_data["firebase_credential_path"])
 
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': config_data['firebase_database_url']
-    })
+    firebase_admin.initialize_app(
+        cred, {"databaseURL": config_data["firebase_database_url"]}
+    )
 
 # elasticsearch
 es: Elasticsearch
 
-if config_data['elasticsearch_enabled']:
-    es = Elasticsearch(config_data['elasticsearch_config'])
+if config_data["elasticsearch_enabled"]:
+    es = Elasticsearch(config_data["elasticsearch_config"])
 
 # routes
 from routes.routes_home import routes_home

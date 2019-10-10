@@ -10,32 +10,31 @@ from models.form.auth.auth_update_password import AuthUpdatePasswordForm
 from utils import response
 from utils.auth import account_token_required
 
-routes_api_auth = Blueprint('api_auth', __name__)
+routes_api_auth = Blueprint("api_auth", __name__)
 
 
-@routes_api_auth.route('/api/auth/login', methods=['POST'])
+@routes_api_auth.route("/api/auth/login", methods=["POST"])
 @as_json
 def action_login():
     content = request.get_json(silent=True)
     content = content if content is not None else {}
 
-    email = content.get('email')
-    password = content.get('password')
+    email = content.get("email")
+    password = content.get("password")
 
     account = Account.query.filter_by(email=email).first()
 
     if account and account.check_password(password):
         encoded_jwt = account.get_jwt_encoded()
 
-        return response.success(data={
-            'account': account.to_dict('login'),
-            'token': encoded_jwt
-        })
+        return response.success(
+            data={"account": account.to_dict("login"), "token": encoded_jwt}
+        )
     else:
-        return response.not_success('validate')
+        return response.not_success("validate")
 
 
-@routes_api_auth.route('/api/auth/update-password', methods=['POST'])
+@routes_api_auth.route("/api/auth/update-password", methods=["POST"])
 @account_token_required
 @as_json
 def action_update_password(account):
@@ -54,12 +53,14 @@ def action_update_password(account):
 
             return response.success()
         else:
-            return response.with_validate_error('password', ['The old password is wrong'])
+            return response.with_validate_error(
+                "password", ["The old password is wrong"]
+            )
     else:
         return response.from_form(form)
 
 
-@routes_api_auth.route('/api/auth/update', methods=['POST'])
+@routes_api_auth.route("/api/auth/update", methods=["POST"])
 @account_token_required
 @as_json
 def action_update(account):
@@ -79,17 +80,13 @@ def action_update(account):
 
         account = Account.query.get(account.id)
 
-        return response.success(data={
-            'account': account.to_dict('update')
-        })
+        return response.success(data={"account": account.to_dict("update")})
     else:
         return response.from_form(form)
 
 
-@routes_api_auth.route('/api/auth/get', methods=['POST'])
+@routes_api_auth.route("/api/auth/get", methods=["POST"])
 @account_token_required
 @as_json
 def action_get(account):
-    return response.success(data={
-        'account': account.to_dict('update')
-    })
+    return response.success(data={"account": account.to_dict("update")})

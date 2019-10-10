@@ -9,7 +9,7 @@ from config.data import config_data
 
 
 class Account(UserMixin, db.Model):
-    __tablename__ = 'account'
+    __tablename__ = "account"
 
     id = db.Column(db.BigInteger, primary_key=True)
     name = db.Column(db.Text)
@@ -37,18 +37,17 @@ class Account(UserMixin, db.Model):
 
     def get_jwt_encoded(self):
         encode_data = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=config_data['jwt_login_expiration_amount']),
-            'iat': datetime.datetime.utcnow(),
-            'account_id': self.id
+            "exp": datetime.datetime.utcnow()
+            + datetime.timedelta(days=config_data["jwt_login_expiration_amount"]),
+            "iat": datetime.datetime.utcnow(),
+            "account_id": self.id,
         }
 
         encoded_jwt = jwt.encode(
-            encode_data,
-            config_data['jwt_key'],
-            algorithm=config_data['jwt_algorithm']
+            encode_data, config_data["jwt_key"], algorithm=config_data["jwt_algorithm"]
         )
 
-        return encoded_jwt.decode('UTF-8')
+        return encoded_jwt.decode("UTF-8")
 
     def to_dict(self, scenario):
         if not scenario:
@@ -56,15 +55,55 @@ class Account(UserMixin, db.Model):
 
         keys = []
 
-        if scenario == 'create':
-            keys = ['id', 'name', 'email', 'photo_url', 'is_admin', 'created_at', 'updated_at']
-        elif scenario == 'update':
-            keys = ['id', 'name', 'email', 'photo_url', 'is_admin', 'created_at', 'updated_at']
-        elif scenario == 'list':
-            keys = ['id', 'name', 'email', 'photo_url', 'is_admin', 'created_at', 'updated_at']
-        elif scenario == 'get':
-            keys = ['id', 'name', 'email', 'photo_url', 'is_admin', 'created_at', 'updated_at']
-        elif scenario == 'login':
-            keys = ['id', 'name', 'email', 'photo_url', 'is_admin', 'created_at', 'updated_at']
+        if scenario == "create":
+            keys = [
+                "id",
+                "name",
+                "email",
+                "photo_url",
+                "is_admin",
+                "created_at",
+                "updated_at",
+            ]
+        elif scenario == "update":
+            keys = [
+                "id",
+                "name",
+                "email",
+                "photo_url",
+                "is_admin",
+                "created_at",
+                "updated_at",
+            ]
+        elif scenario == "list":
+            keys = [
+                "id",
+                "name",
+                "email",
+                "photo_url",
+                "is_admin",
+                "created_at",
+                "updated_at",
+            ]
+        elif scenario == "get":
+            keys = [
+                "id",
+                "name",
+                "email",
+                "photo_url",
+                "is_admin",
+                "created_at",
+                "updated_at",
+            ]
+        elif scenario == "login":
+            keys = [
+                "id",
+                "name",
+                "email",
+                "photo_url",
+                "is_admin",
+                "created_at",
+                "updated_at",
+            ]
 
         return dict([(k, getattr(self, k)) for k in keys])

@@ -12,10 +12,10 @@ from models.form.device.device_update import DeviceUpdateForm
 from utils import response
 from utils.auth import account_token_required
 
-routes_api_device = Blueprint('api_device', __name__)
+routes_api_device = Blueprint("api_device", __name__)
 
 
-@routes_api_device.route('/api/device/create', methods=['POST'])
+@routes_api_device.route("/api/device/create", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_create():
@@ -36,14 +36,12 @@ def action_create():
 
         new_device = Device.query.get(new_device.id)
 
-        return response.success(data={
-            'device': new_device.to_dict('create')
-        })
+        return response.success(data={"device": new_device.to_dict("create")})
     else:
         return response.from_form(form)
 
 
-@routes_api_device.route('/api/device/update', methods=['POST'])
+@routes_api_device.route("/api/device/update", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_update():
@@ -64,16 +62,14 @@ def action_update():
 
             device = Device.query.get(device.id)
 
-            return response.success(data={
-                'device': device.to_dict('update')
-            })
+            return response.success(data={"device": device.to_dict("update")})
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)
 
 
-@routes_api_device.route('/api/device/delete', methods=['POST'])
+@routes_api_device.route("/api/device/delete", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_delete():
@@ -92,24 +88,22 @@ def action_delete():
 
             return response.success()
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)
 
 
-@routes_api_device.route('/api/device/list', methods=['POST'])
+@routes_api_device.route("/api/device/list", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_list():
     devices = Device.query.order_by(Device.created_at.desc()).all()
-    devices = [r.to_dict('list') for r in devices]
+    devices = [r.to_dict("list") for r in devices]
 
-    return response.success(data={
-        'list': devices,
-    })
+    return response.success(data={"list": devices})
 
 
-@routes_api_device.route('/api/device/get', methods=['POST'])
+@routes_api_device.route("/api/device/get", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_get():
@@ -122,16 +116,14 @@ def action_get():
         device = Device.query.get(form.id.data)
 
         if device:
-            return response.success(data={
-                'device': device.to_dict('get')
-            })
+            return response.success(data={"device": device.to_dict("get")})
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)
 
 
-@routes_api_device.route('/api/device/token', methods=['POST'])
+@routes_api_device.route("/api/device/token", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_token():
@@ -144,10 +136,8 @@ def action_token():
         device = Device.query.get(form.id.data)
 
         if device:
-            return response.success(data={
-                'token': device.get_jwt_encoded()
-            })
+            return response.success(data={"token": device.get_jwt_encoded()})
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)

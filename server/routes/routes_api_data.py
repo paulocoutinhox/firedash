@@ -13,10 +13,10 @@ from utils import response
 from utils.auth import account_token_required, device_token_required
 from utils.random import random_int_values, random_datetime_range
 
-routes_api_data = Blueprint('api_data', __name__)
+routes_api_data = Blueprint("api_data", __name__)
 
 
-@routes_api_data.route('/api/data/out/random', methods=['POST'])
+@routes_api_data.route("/api/data/out/random", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_data_out_by_random():
@@ -30,27 +30,24 @@ def action_data_out_by_random():
         dataset_list = []
 
         for _ in range(datasets):
-            items = random_int_values(form.amount.data, form.min_value.data, form.max_value.data)
+            items = random_int_values(
+                form.amount.data, form.min_value.data, form.max_value.data
+            )
 
-            dataset_list.append({
-                'items': items
-            })
+            dataset_list.append({"items": items})
 
         labels = random_datetime_range(
             datetime.now() - timedelta(seconds=form.amount.data - 1),
             datetime.now(),
-            dt_format='%H:%M:%S'
+            dt_format="%H:%M:%S",
         )
 
-        return response.success(data={
-            'labels': labels,
-            'datasets': dataset_list
-        })
+        return response.success(data={"labels": labels, "datasets": dataset_list})
     else:
         return response.from_form(form)
 
 
-@routes_api_data.route('/api/data/out/device', methods=['POST'])
+@routes_api_data.route("/api/data/out/device", methods=["POST"])
 @account_token_required(export=False)
 @as_json
 def action_data_out_by_device():
@@ -67,28 +64,27 @@ def action_data_out_by_device():
                 DeviceData.device_id == form.device_id.data,
                 DeviceData.type == form.type.data,
                 DeviceData.created_at >= form.start_dt.data,
-                DeviceData.created_at <= form.end_dt.data
+                DeviceData.created_at <= form.end_dt.data,
             ).all()
 
             if items:
-                labels = map(lambda item: item.created_at.strftime(form.format_dt.data), items)
+                labels = map(
+                    lambda item: item.created_at.strftime(form.format_dt.data), items
+                )
                 items = map(lambda item: item.value, items)
 
-                return response.success(data={
-                    'labels': labels,
-                    'datasets': [{
-                        'items': items
-                    }]
-                })
+                return response.success(
+                    data={"labels": labels, "datasets": [{"items": items}]}
+                )
             else:
-                return response.not_success('empty')
+                return response.not_success("empty")
         else:
-            return response.not_success('not-found')
+            return response.not_success("not-found")
     else:
         return response.from_form(form)
 
 
-@routes_api_data.route('/api/data/in', methods=['POST'])
+@routes_api_data.route("/api/data/in", methods=["POST"])
 @device_token_required
 @as_json
 def action_data_in(device):

@@ -2,7 +2,7 @@ from app.app_data import db
 
 
 class DeviceData(db.Model):
-    __tablename__ = 'device_data'
+    __tablename__ = "device_data"
 
     id = db.Column(db.BigInteger, primary_key=True)
     device_id = db.Column(db.BigInteger)
@@ -19,7 +19,7 @@ class DeviceData(db.Model):
 
         keys = []
 
-        if scenario == 'out':
-            keys = ['value', 'created_at']
+        if scenario == "out":
+            keys = ["value", "created_at"]
 
         return dict([(k, getattr(self, k)) for k in keys])

@@ -18,7 +18,7 @@ def account_token_required(func=None, *, export=True):
         verify_jwt_in_request()
         claims = get_jwt_claims()
 
-        account_id = claims.get('account_id', 0)
+        account_id = claims.get("account_id", 0)
 
         if account_id > 0:
             account = Account.query.get(account_id)
@@ -29,9 +29,9 @@ def account_token_required(func=None, *, export=True):
                 else:
                     return func(*args, **kwargs)
             else:
-                return jsonify({'success': False, 'message': 'unauthorized'}), 401
+                return jsonify({"success": False, "message": "unauthorized"}), 401
         else:
-            return jsonify({'success': False, 'message': 'unauthorized'}), 401
+            return jsonify({"success": False, "message": "unauthorized"}), 401
 
     return wrapper
 
@@ -45,7 +45,7 @@ def device_token_required(func=None, *, export=True):
         verify_jwt_in_request()
         claims = get_jwt_claims()
 
-        device_id = claims.get('device_id', 0)
+        device_id = claims.get("device_id", 0)
 
         if device_id > 0:
             device = Device.query.get(device_id)
@@ -56,9 +56,9 @@ def device_token_required(func=None, *, export=True):
                 else:
                     return func(*args, **kwargs)
             else:
-                return jsonify({'success': False, 'message': 'unauthorized'}), 401
+                return jsonify({"success": False, "message": "unauthorized"}), 401
         else:
-            return jsonify({'success': False, 'message': 'unauthorized'}), 401
+            return jsonify({"success": False, "message": "unauthorized"}), 401
 
     return wrapper
 
@@ -67,7 +67,7 @@ def verify_jwt_in_request():
     jwt_token = get_jwt_from_request()
 
     if not jwt_token:
-        return jsonify({'success': False, 'message': 'unauthorized'}), 401
+        return jsonify({"success": False, "message": "unauthorized"}), 401
 
 
 def get_jwt_claims():
@@ -86,7 +86,7 @@ def get_jwt_claims():
 
 def get_jwt_from_request():
     if request.headers:
-        auth_header = request.headers.get('Authorization')
+        auth_header = request.headers.get("Authorization")
 
         if auth_header and len(auth_header) > 0:
             auth_header = auth_header.split(" ")[1]
@@ -109,12 +109,12 @@ def decode_auth_token(auth_token):
     try:
         payload = jwt.decode(
             auth_token,
-            config_data['jwt_key'],
-            algorithms=[config_data['jwt_algorithm']]
+            config_data["jwt_key"],
+            algorithms=[config_data["jwt_algorithm"]],
         )
 
         return payload
     except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
+        return "Signature expired. Please log in again."
     except jwt.InvalidTokenError:
-        return 'Invalid token. Please log in again.'
+        return "Invalid token. Please log in again."
