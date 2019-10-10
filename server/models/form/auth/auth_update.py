@@ -1,9 +1,12 @@
-from wtforms import Form, PasswordField, validators
+from wtforms import Form, validators, StringField
 
 
 class AuthUpdateForm(Form):
-    name = PasswordField("Name", [validators.DataRequired()])
+    name = StringField("Name", [validators.DataRequired(), validators.length(max=255)])
 
-    email = PasswordField("Email", [validators.DataRequired(), validators.Email()])
+    email = StringField(
+        "Email",
+        [validators.DataRequired(), validators.length(max=255), validators.Email()],
+    )
 
-    photo_url = PasswordField("Photo url")
+    photo_url = StringField("Photo url", [validators.length(max=255)])

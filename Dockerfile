@@ -5,6 +5,7 @@ COPY server/requirements.txt /app/server/requirements.txt
 
 WORKDIR /app/server
 
+RUN pip install --upgrade pip
 RUN pip install uwsgi
 RUN pip install -r requirements.txt
 

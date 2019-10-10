@@ -1,23 +1,23 @@
+import time
 from datetime import datetime, timedelta
 
+from app.app_data import db
 from flask import Blueprint, request
 from flask_json import as_json
-
-from app.app_data import db
 from models.domain.device import Device
 from models.domain.device_data import DeviceData
 from models.form.device_data.device_data_create import DeviceDataCreateForm
 from models.form.device_data.device_data_out_device import DeviceDataOutByDeviceForm
 from models.form.device_data.device_data_out_random import DeviceDataOutByRandomForm
 from utils import response
-from utils.auth import account_token_required, device_token_required
+from utils.auth import account_auth_token_required, device_auth_token_required
 from utils.random import random_int_values, random_datetime_range
 
 routes_api_data = Blueprint("api_data", __name__)
 
 
 @routes_api_data.route("/api/data/out/random", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_data_out_by_random():
     content = request.get_json(silent=True)
@@ -39,7 +39,7 @@ def action_data_out_by_random():
         labels = random_datetime_range(
             datetime.now() - timedelta(seconds=form.amount.data - 1),
             datetime.now(),
-            dt_format="%H:%M:%S",
+            dt_format=form.format_dt.data,
         )
 
         return response.success(data={"labels": labels, "datasets": dataset_list})
@@ -48,7 +48,7 @@ def action_data_out_by_random():
 
 
 @routes_api_data.route("/api/data/out/device", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_data_out_by_device():
     content = request.get_json(silent=True)
@@ -57,20 +57,27 @@ def action_data_out_by_device():
     form = DeviceDataOutByDeviceForm.from_json(content)
 
     if form.validate():
-        device = Device.query.get(form.device_id.data)
+        device = Device.query.filter(Device.token == form.device_token.data).first()
 
         if device:
             items = DeviceData.query.filter(
-                DeviceData.device_id == form.device_id.data,
+                DeviceData.device_id == device.id,
                 DeviceData.type == form.type.data,
                 DeviceData.created_at >= form.start_dt.data,
                 DeviceData.created_at <= form.end_dt.data,
             ).all()
 
             if items:
-                labels = map(
-                    lambda item: item.created_at.strftime(form.format_dt.data), items
-                )
+                if form.format_dt.data:
+                    labels = map(
+                        lambda item: item.created_at.strftime(form.format_dt.data),
+                        items,
+                    )
+                else:
+                    labels = map(
+                        lambda item: time.mktime(item.created_at.timetuple()), items
+                    )
+
                 items = map(lambda item: item.value, items)
 
                 return response.success(
@@ -85,19 +92,19 @@ def action_data_out_by_device():
 
 
 @routes_api_data.route("/api/data/in", methods=["POST"])
-@device_token_required
+@device_auth_token_required
 @as_json
 def action_data_in(device):
     content = request.get_json(silent=True)
     content = content if content is not None else {}
 
     form = DeviceDataCreateForm.from_json(content)
-    form.device_id.data = device.id
+    form.device_token.data = device.token
 
     if form.validate():
         new_device_data = DeviceData()
 
-        new_device_data.device_id = form.device_id.data
+        new_device_data.device_id = device.id
         new_device_data.type = form.type.data
         new_device_data.value = form.value.data
         new_device_data.created_at = datetime.utcnow()

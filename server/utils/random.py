@@ -1,3 +1,5 @@
+import calendar
+import time
 from datetime import timedelta
 from random import randint, seed
 
@@ -20,7 +22,11 @@ def random_datetime_range(
     current = start
 
     while current < end:
-        result.append(current.strftime(dt_format))
+        if dt_format:
+            result.append(current.strftime(dt_format))
+        else:
+            result.append(time.mktime(current.timetuple()))
+
         current += delta
 
     return result

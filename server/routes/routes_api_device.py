@@ -10,13 +10,13 @@ from models.form.device.device_delete import DeviceDeleteForm
 from models.form.device.device_get import DeviceGetForm
 from models.form.device.device_update import DeviceUpdateForm
 from utils import response
-from utils.auth import account_token_required
+from utils.auth import account_auth_token_required
 
 routes_api_device = Blueprint("api_device", __name__)
 
 
 @routes_api_device.route("/api/device/create", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_create():
     content = request.get_json(silent=True)
@@ -28,6 +28,7 @@ def action_create():
         new_device = Device()
 
         new_device.name = form.name.data
+        new_device.token = form.token.data
         new_device.created_at = datetime.utcnow()
 
         db.session.add(new_device)
@@ -42,7 +43,7 @@ def action_create():
 
 
 @routes_api_device.route("/api/device/update", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_update():
     content = request.get_json(silent=True)
@@ -55,6 +56,7 @@ def action_update():
 
         if device:
             device.name = form.name.data
+            device.token = form.token.data
             device.updated_at = datetime.utcnow()
 
             db.session.flush()
@@ -70,7 +72,7 @@ def action_update():
 
 
 @routes_api_device.route("/api/device/delete", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_delete():
     content = request.get_json(silent=True)
@@ -94,7 +96,7 @@ def action_delete():
 
 
 @routes_api_device.route("/api/device/list", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_list():
     devices = Device.query.order_by(Device.created_at.desc()).all()
@@ -104,7 +106,7 @@ def action_list():
 
 
 @routes_api_device.route("/api/device/get", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_get():
     content = request.get_json(silent=True)
@@ -124,7 +126,7 @@ def action_get():
 
 
 @routes_api_device.route("/api/device/token", methods=["POST"])
-@account_token_required(export=False)
+@account_auth_token_required(export=False)
 @as_json
 def action_token():
     content = request.get_json(silent=True)

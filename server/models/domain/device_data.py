@@ -4,11 +4,11 @@ from app.app_data import db
 class DeviceData(db.Model):
     __tablename__ = "device_data"
 
-    id = db.Column(db.BigInteger, primary_key=True)
-    device_id = db.Column(db.BigInteger)
-    type = db.Column(db.Text)
-    value = db.Column(db.Float)
-    created_at = db.Column(db.DateTime)
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    device_id = db.Column(db.BigInteger, nullable=False)
+    type = db.Column(db.Text, nullable=False)
+    value = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
 
     def get_id(self):
         return self.id

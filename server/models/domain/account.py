@@ -11,13 +11,13 @@ from config.data import config_data
 class Account(UserMixin, db.Model):
     __tablename__ = "account"
 
-    id = db.Column(db.BigInteger, primary_key=True)
-    name = db.Column(db.Text)
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
-    photo_url = db.Column(db.Text)
+    photo_url = db.Column(db.Text, nullable=True)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime)
 
     def get_id(self):

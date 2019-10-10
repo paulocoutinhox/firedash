@@ -10,13 +10,13 @@ from models.form.account.account_delete import AccountDeleteForm
 from models.form.account.account_get import AccountGetForm
 from models.form.account.account_update import AccountUpdateForm
 from utils import response
-from utils.auth import account_token_required
+from utils.auth import account_auth_token_required
 
 routes_api_account = Blueprint("api_account", __name__)
 
 
 @routes_api_account.route("/api/account/create", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_create(account):
     if not account.is_admin:
@@ -50,7 +50,7 @@ def action_create(account):
 
 
 @routes_api_account.route("/api/account/update", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_update(account):
     if not account.is_admin:
@@ -87,7 +87,7 @@ def action_update(account):
 
 
 @routes_api_account.route("/api/account/delete", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_delete(account):
     if not account.is_admin:
@@ -117,7 +117,7 @@ def action_delete(account):
 
 
 @routes_api_account.route("/api/account/list", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_list(account):
     if not account.is_admin:
@@ -130,7 +130,7 @@ def action_list(account):
 
 
 @routes_api_account.route("/api/account/get", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_get(account):
     if not account.is_admin:
@@ -153,7 +153,7 @@ def action_get(account):
 
 
 @routes_api_account.route("/api/account/token", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_token(account):
     if not account.is_admin:

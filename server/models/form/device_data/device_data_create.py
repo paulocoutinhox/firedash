@@ -1,9 +1,11 @@
-from wtforms import Form, validators, StringField, IntegerField, FloatField
+from wtforms import Form, validators, StringField, FloatField
 
 
 class DeviceDataCreateForm(Form):
-    device_id = IntegerField("Device ID", [validators.DataRequired()])
+    device_token = StringField(
+        "Device Token", [validators.DataRequired(), validators.length(max=255)]
+    )
 
-    type = StringField("Type", [validators.DataRequired()])
+    type = StringField("Type", [validators.DataRequired(), validators.length(max=255)])
 
     value = FloatField("Value", [validators.DataRequired()])

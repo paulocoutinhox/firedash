@@ -17,6 +17,19 @@
           </div>
         </div>
 
+        <div class="field">
+          <label class="label">Token</label>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              name="token"
+              placeholder="e.g. token-test"
+              v-model="formData.token"
+            >
+          </div>
+        </div>
+
         <div class="formButtonList">
           <div class="field">
             <p class="control">
@@ -42,7 +55,8 @@ export default {
     return {
       isLoading: true,
       formData: {
-        name: ""
+        name: "",
+        token: ""
       }
     };
   },

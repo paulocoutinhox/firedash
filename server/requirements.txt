@@ -10,3 +10,5 @@ firebase-admin
 elasticsearch
 wtforms
 wtforms_json
+wtforms-alchemy
+six

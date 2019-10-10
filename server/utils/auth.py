@@ -9,9 +9,9 @@ from models.domain.account import Account
 from models.domain.device import Device
 
 
-def account_token_required(func=None, *, export=True):
+def account_auth_token_required(func=None, *, export=True):
     if func is None:
-        return partial(account_token_required, export=export)
+        return partial(account_auth_token_required, export=export)
 
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -36,19 +36,19 @@ def account_token_required(func=None, *, export=True):
     return wrapper
 
 
-def device_token_required(func=None, *, export=True):
+def device_auth_token_required(func=None, *, export=True):
     if func is None:
-        return partial(device_token_required, export=export)
+        return partial(device_auth_token_required, export=export)
 
     @wraps(func)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
 
-        device_id = claims.get("device_id", 0)
+        device_token = claims.get("device_token", None)
 
-        if device_id > 0:
-            device = Device.query.get(device_id)
+        if device_token:
+            device = Device.query.filter(Device.token == device_token).first()
 
             if device:
                 if export:

@@ -8,7 +8,7 @@ from models.domain.account import Account
 from models.form.auth.auth_update import AuthUpdateForm
 from models.form.auth.auth_update_password import AuthUpdatePasswordForm
 from utils import response
-from utils.auth import account_token_required
+from utils.auth import account_auth_token_required
 
 routes_api_auth = Blueprint("api_auth", __name__)
 
@@ -35,7 +35,7 @@ def action_login():
 
 
 @routes_api_auth.route("/api/auth/update-password", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_update_password(account):
     content = request.get_json(silent=True)
@@ -61,7 +61,7 @@ def action_update_password(account):
 
 
 @routes_api_auth.route("/api/auth/update", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_update(account):
     content = request.get_json(silent=True)
@@ -86,7 +86,7 @@ def action_update(account):
 
 
 @routes_api_auth.route("/api/auth/get", methods=["POST"])
-@account_token_required
+@account_auth_token_required
 @as_json
 def action_get(account):
     return response.success(data={"account": account.to_dict("update")})

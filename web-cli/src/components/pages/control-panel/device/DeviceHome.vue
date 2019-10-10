@@ -93,9 +93,9 @@
         full-screen
         :can-cancel="true"
       >
-        <div class="modal-card" style="padding: 0 10px">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Device token</p>
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head" style="background-color: #219CED;">
+            <p class="modal-card-title" style="color: #ffffff;">Device token</p>
           </header>
           <section class="modal-card-body">
             <b-field>
@@ -158,7 +158,7 @@ export default {
         });
     },
     deleteRow(id) {
-      this.$dialog.confirm({
+      this.$buefy.dialog.confirm({
         message: "Are you sure?",
         type: "is-danger",
         hasIcon: true,

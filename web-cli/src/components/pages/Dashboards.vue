@@ -114,7 +114,8 @@ export default {
             amount: 10,
             datasets: 1,
             min_value: 1,
-            max_value: 20
+            max_value: 20,
+            format_dt: "%H:%M:%S"
           }
         }
       },
@@ -126,7 +127,8 @@ export default {
             amount: 10,
             datasets: 1,
             min_value: 1,
-            max_value: 20
+            max_value: 20,
+            format_dt: "%H:%M:%S"
           }
         }
       },
@@ -138,7 +140,8 @@ export default {
             amount: 10,
             datasets: 1,
             min_value: 1,
-            max_value: 20
+            max_value: 20,
+            format_dt: "%H:%M:%S"
           }
         }
       },
@@ -150,7 +153,8 @@ export default {
             amount: 20,
             datasets: 3,
             min_value: 1,
-            max_value: 20
+            max_value: 20,
+            format_dt: "%H:%M:%S"
           }
         }
       },
@@ -159,7 +163,7 @@ export default {
         request: {
           url: "/api/data/out/device",
           data: {
-            device_id: 1,
+            device_token: "test",
             type: "temperature",
             start_dt: null,
             end_dt: null,

@@ -7,6 +7,10 @@
       <p>{{ formData.name }}</p>
       <div class="formViewSeparator"></div>
 
+      <p class="has-text-weight-bold">Token:</p>
+      <p>{{ formData.token }}</p>
+      <div class="formViewSeparator"></div>
+
       <p class="has-text-weight-bold">Created at:</p>
       <p>
         <span class="tag is-default" v-if="formData.created_at">
