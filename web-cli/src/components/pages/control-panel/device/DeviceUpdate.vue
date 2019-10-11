@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-logo title="Devices - Update"/>
+    <app-logo title="Devices - Update" />
 
     <section class="section section-padding">
       <form method="post" @submit.prevent="submit">
@@ -13,20 +13,29 @@
               name="name"
               placeholder="e.g. Device X"
               v-model="formData.name"
-            >
+            />
           </div>
         </div>
 
-        <div class="field">
-          <label class="label">Token</label>
-          <div class="control">
+        <label class="label">Token</label>
+
+        <div class="field is-grouped">
+          <div class="control is-expanded">
             <input
               class="input"
               type="text"
               name="token"
               placeholder="e.g. token-test"
               v-model="formData.token"
-            >
+            />
+          </div>
+          <div class="control">
+            <b-button
+              native-type="button"
+              icon-left="mdi mdi-plus"
+              type="is-primary"
+              v-on:click="generateToken"
+            >Generate</b-button>
           </div>
         </div>
 
@@ -135,6 +144,9 @@ export default {
             message: this.getResponseMessage()
           });
         });
+    },
+    generateToken() {
+      this.formData.token = this.$uuid.v4();
     },
     back() {
       this.$router.push("/control-panel/device");

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-logo title="Devices - View"/>
+    <app-logo title="Devices - View" />
 
     <section class="section section-padding">
       <p class="has-text-weight-bold">Name:</p>

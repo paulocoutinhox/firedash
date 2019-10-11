@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VueApexCharts :height="height" type="line" :options="chartOptions" :series="chartData"/>
+    <VueApexCharts :height="height" type="line" :options="chartOptions" :series="chartData" />
   </div>
 </template>
 
@@ -32,6 +32,18 @@ export default {
     return {
       loading: false,
       errored: false,
+      defaultOptions: {
+        title: "My chart",
+        interval: 10000,
+        legend: {
+          enabled: true
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        }
+      },
       chartOptions: {
         chart: {
           toolbar: {
@@ -47,6 +59,7 @@ export default {
           enabled: false
         },
         legend: {
+          show: true,
           position: "top",
           horizontalAlign: "right",
           floating: true
@@ -71,32 +84,48 @@ export default {
       this.$http
         .post(this.options.request.url, requestData)
         .then(response => {
-          let datasets = response.data.data.datasets;
-          let labels = response.data.data.labels;
-          let chartData = [];
+          if (response && response.data.success) {
+            let datasets = response.data.data.datasets;
+            let labels = response.data.data.labels;
+            let chartData = [];
 
-          this.chartOptions = {
-            ...this.chartOptions,
-            ...{
-              xaxis: {
-                type: "category",
-                categories: labels
+            for (var x = 0; x < labels.length; x++) {
+              if (this.mergedOptions.labels.enabled) {
+                if (this.mergedOptions.labels.type == "datetime") {
+                  labels[x] = this.$moment(labels[x]).format(
+                    this.mergedOptions.labels.format
+                  );
+                } else {
+                  labels[x] = labels[x];
+                }
+              } else {
+                labels[x] = "";
               }
             }
-          };
 
-          for (var x = 0; x < datasets.length; x++) {
-            let title = this.options.title[x];
-            let items = datasets[x].items;
+            this.chartOptions = {
+              ...this.chartOptions,
+              ...{
+                xaxis: {
+                  type: "category",
+                  categories: labels
+                }
+              }
+            };
 
-            chartData.push({
-              name: title,
-              data: items
-            });
+            for (var x = 0; x < datasets.length; x++) {
+              let title = this.options.title[x];
+              let items = datasets[x].items;
+
+              chartData.push({
+                name: title,
+                data: items
+              });
+            }
+
+            this.chartData = chartData;
+            this.errored = false;
           }
-
-          this.chartData = chartData;
-          this.errored = false;
         })
         .catch(error => {
           this.errored = true;
@@ -106,11 +135,19 @@ export default {
         });
     }
   },
+  computed: {
+    mergedOptions() {
+      return {
+        ...this.defaultOptions,
+        ...this.options
+      };
+    }
+  },
   mounted() {
-    this.timers.getRemoteData.time = this.options.interval
-      ? this.options.interval
-      : 10000;
+    this.timers.getRemoteData.time = this.mergedOptions.interval;
     this.$timer.start("getRemoteData");
+
+    this.chartOptions.legend.show = this.mergedOptions.legend.enabled;
   }
 };
 </script>

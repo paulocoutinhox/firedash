@@ -1,34 +1,56 @@
 <template>
   <div>
-    <app-logo title="Accounts - Update"/>
+    <app-logo title="Accounts - Update" />
 
     <section class="section section-padding">
       <form method="post" @submit.prevent="submit">
         <div class="field">
           <label class="label">Name</label>
           <div class="control">
-            <input class="input" type="text" name="name" v-model="formData.name">
+            <input class="input" type="text" name="name" v-model="formData.name" />
+          </div>
+        </div>
+
+        <label class="label">Token</label>
+
+        <div class="field is-grouped">
+          <div class="control is-expanded">
+            <input
+              class="input"
+              type="text"
+              name="token"
+              placeholder="e.g. token-test"
+              v-model="formData.token"
+            />
+          </div>
+          <div class="control">
+            <b-button
+              native-type="button"
+              icon-left="mdi mdi-plus"
+              type="is-primary"
+              v-on:click="generateToken"
+            >Generate</b-button>
           </div>
         </div>
 
         <div class="field">
           <label class="label">E-mail</label>
           <div class="control">
-            <input class="input" type="text" name="email" v-model="formData.email">
+            <input class="input" type="text" name="email" v-model="formData.email" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Photo URL</label>
           <div class="control">
-            <input class="input" type="text" name="photo_url" v-model="formData.photo_url">
+            <input class="input" type="text" name="photo_url" v-model="formData.photo_url" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Password</label>
           <div class="control">
-            <input class="input" type="password" name="password" v-model="formData.password">
+            <input class="input" type="password" name="password" v-model="formData.password" />
           </div>
         </div>
 
@@ -40,7 +62,7 @@
               type="password"
               name="repeat_password"
               v-model="formData.repeat_password"
-            >
+            />
           </div>
         </div>
 
@@ -77,6 +99,7 @@ export default {
       isLoading: true,
       formData: {
         name: "",
+        token: "",
         email: "",
         photo_url: "",
         password: "",
@@ -160,6 +183,9 @@ export default {
             message: this.getResponseMessage()
           });
         });
+    },
+    generateToken() {
+      this.formData.token = this.$uuid.v4();
     },
     back() {
       this.$router.push("/control-panel/account");

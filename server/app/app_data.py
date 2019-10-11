@@ -8,20 +8,32 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config.data import config_data
 
+# web client
+web_cli_template_folder = None
+web_cli_static_folder = None
+
+if config_data["web_cli_enabled"]:
+    web_cli_template_folder = "../../web-cli/dist"
+    web_cli_static_folder = "../../web-cli/dist/static"
+
+# webs server
 flask = Flask(
     __name__,
-    template_folder="../../web-cli/dist",
-    static_folder="../../web-cli/dist/static",
+    template_folder=web_cli_template_folder,
+    static_folder=web_cli_static_folder,
 )
 
+flask.config["DEBUG"] = config_data["debug"]
+
+flask.config["SQLALCHEMY_ECHO"] = config_data["debug"]
 flask.config["SQLALCHEMY_DATABASE_URI"] = config_data["database_uri"]
 flask.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = config_data[
     "database_track_modifications"
 ]
+
 flask.config["TEMPLATES_AUTO_RELOAD"] = config_data["templates_auto_reload"]
 flask.config["SESSION_TYPE"] = config_data["server_session_type"]
 flask.config["JSON_ADD_STATUS"] = False
-flask.config["DEBUG"] = config_data["debug"]
 
 flask.secret_key = config_data["secret_key"]
 

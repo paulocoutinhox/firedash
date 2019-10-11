@@ -4,6 +4,7 @@ from collections import OrderedDict
 config_data = OrderedDict()
 
 config_data["debug"] = False
+config_data["web_cli_enabled"] = True
 
 config_data["secret_key"] = "[CHANGE-HERE]"
 config_data["database_uri"] = "sqlite:///../../db/app.db"

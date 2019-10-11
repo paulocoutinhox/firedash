@@ -13,6 +13,7 @@ class Account(UserMixin, db.Model):
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     name = db.Column(db.Text, nullable=False)
+    token = db.Column(db.Text, unique=True, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
     photo_url = db.Column(db.Text, nullable=True)
@@ -40,7 +41,7 @@ class Account(UserMixin, db.Model):
             "exp": datetime.datetime.utcnow()
             + datetime.timedelta(days=config_data["jwt_login_expiration_amount"]),
             "iat": datetime.datetime.utcnow(),
-            "account_id": self.id,
+            "account_token": self.token,
         }
 
         encoded_jwt = jwt.encode(
@@ -59,6 +60,7 @@ class Account(UserMixin, db.Model):
             keys = [
                 "id",
                 "name",
+                "token",
                 "email",
                 "photo_url",
                 "is_admin",
@@ -69,6 +71,7 @@ class Account(UserMixin, db.Model):
             keys = [
                 "id",
                 "name",
+                "token",
                 "email",
                 "photo_url",
                 "is_admin",
@@ -79,6 +82,7 @@ class Account(UserMixin, db.Model):
             keys = [
                 "id",
                 "name",
+                "token",
                 "email",
                 "photo_url",
                 "is_admin",
@@ -89,6 +93,7 @@ class Account(UserMixin, db.Model):
             keys = [
                 "id",
                 "name",
+                "token",
                 "email",
                 "photo_url",
                 "is_admin",
@@ -99,6 +104,7 @@ class Account(UserMixin, db.Model):
             keys = [
                 "id",
                 "name",
+                "token",
                 "email",
                 "photo_url",
                 "is_admin",

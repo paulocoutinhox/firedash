@@ -25,9 +25,24 @@ export default {
     return {
       loading: false,
       errored: false,
+      defaultOptions: {
+        title: "My chart",
+        interval: 10000,
+        legend: {
+          enabled: true
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        }
+      },
       chartOptions: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        legend: {
+          display: true
+        }
       }
     };
   },
@@ -42,33 +57,50 @@ export default {
 
       this.loading = true;
 
-      let requestData = this.options.request.data
-        ? this.options.request.data
+      let requestData = this.mergedOptions.request.data
+        ? this.mergedOptions.request.data
         : {};
 
       this.$http
-        .post(this.options.request.url, requestData)
+        .post(this.mergedOptions.request.url, requestData)
         .then(response => {
-          let datasets = response.data.data.datasets;
-          let labels = response.data.data.labels;
-          let chartData = { labels: labels, datasets: [] };
+          if (response && response.data.success) {
+            let datasets = response.data.data.datasets;
+            let labels = response.data.data.labels;
 
-          for (var x = 0; x < datasets.length; x++) {
-            let title = this.options.title[x];
-            let items = datasets[x].items;
+            for (var x = 0; x < labels.length; x++) {
+              if (this.mergedOptions.labels.enabled) {
+                if (this.mergedOptions.labels.type == "datetime") {
+                  labels[x] = this.$moment(labels[x]).local().format(
+                    this.mergedOptions.labels.format
+                  );
+                } else {
+                  labels[x] = labels[x];
+                }
+              } else {
+                labels[x] = "";
+              }
+            }
 
-            chartData.datasets.push({
-              label: title,
-              backgroundColor: this.chartColors[x],
-              borderColor: this.chartColors[x],
-              fill: false,
-              borderWidth: 1,
-              data: items
-            });
+            let chartData = { labels: labels, datasets: [] };
+
+            for (var x = 0; x < datasets.length; x++) {
+              let title = this.mergedOptions.title[x];
+              let items = datasets[x].items;
+
+              chartData.datasets.push({
+                label: title,
+                backgroundColor: this.chartColors[x],
+                borderColor: this.chartColors[x],
+                fill: false,
+                borderWidth: 1,
+                data: items
+              });
+            }
+
+            this.chartData = chartData;
+            this.errored = false;
           }
-
-          this.chartData = chartData;
-          this.errored = false;
         })
         .catch(error => {
           this.errored = true;
@@ -78,11 +110,19 @@ export default {
         });
     }
   },
+  computed: {
+    mergedOptions() {
+      return {
+        ...this.defaultOptions,
+        ...this.options
+      };
+    }
+  },
   mounted() {
-    this.timers.getRemoteData.time = this.options.interval
-      ? this.options.interval
-      : 10000;
+    this.timers.getRemoteData.time = this.mergedOptions.interval;
     this.$timer.start("getRemoteData");
+
+    this.chartOptions.legend.display = this.mergedOptions.legend.enabled;
 
     this.renderChart(this.chartData, this.chartOptions);
   }

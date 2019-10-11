@@ -7,6 +7,11 @@ from wtforms_alchemy import ModelForm
 class AccountCreateForm(ModelForm):
     name = StringField("Name", [validators.DataRequired(), validators.length(max=255)])
 
+    token = StringField(
+        "Token",
+        [validators.DataRequired(), validators.length(max=255), Unique(Account.token)],
+    )
+
     email = StringField(
         "Email",
         [

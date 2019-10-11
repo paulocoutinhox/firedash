@@ -14,6 +14,9 @@ Vue.use(Buefy)
 import axios from 'axios'
 Vue.prototype.$http = axios
 
+import UUID from 'vue-uuid';
+Vue.use(UUID);
+
 import store from '@/store.js'
 import App from '@/App'
 import router from '@/router'

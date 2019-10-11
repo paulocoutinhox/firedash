@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-logo title="Devices"/>
+    <app-logo title="Devices" />
 
     <section class="section section-padding">
       <b-table

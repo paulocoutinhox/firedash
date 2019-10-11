@@ -4,11 +4,11 @@
       <div class="column is-4-desktop is-4-tablet is-12-mobile">
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title">Temperature</p>
+            <div class="card-header-title">Temperature</div>
           </header>
           <div class="card-content">
             <div class="content">
-              <LineChart :height="220" :options="temperatureOptions"/>
+              <LineChart :height="220" :options="temperatureOptions" />
             </div>
           </div>
         </div>
@@ -17,11 +17,11 @@
       <div class="column is-4-desktop is-4-tablet is-12-mobile">
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title">Humidity</p>
+            <div class="card-header-title">Humidity</div>
           </header>
           <div class="card-content">
             <div class="content">
-              <LineChart :height="220" :options="humidityOptions"/>
+              <LineChart :height="220" :options="humidityOptions" />
             </div>
           </div>
         </div>
@@ -30,11 +30,11 @@
       <div class="column is-4-desktop is-4-tablet is-12-mobile">
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title">Soil</p>
+            <div class="card-header-title">Soil</div>
           </header>
           <div class="card-content">
             <div class="content">
-              <LineChart :height="220" :options="soilOptions"/>
+              <LineChart :height="220" :options="soilOptions" />
             </div>
           </div>
         </div>
@@ -45,33 +45,33 @@
       <div class="column is-12">
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title">
+            <div class="card-header-title">
               Realtime
-              <div class="is-pulled-right" style="padding: 6px 10px 0 0;">
-              <b-select
-                placeholder="Moment"
-                rounded
-                icon="calendar"
-                v-model="realtimeOptions.moment.value"
-                @input="onRealtimeMomentChanged"
-              >
-                <option value="-5 minute">5 minutes</option>
-                <option value="-30 minute">30 minutes</option>
-                <option value="-1 hour">1 hour</option>
-                <option value="-1 day">1 day</option>
-                <option value="-7 day">7 days</option>
-                <option value="-15 day">15 days</option>
-                <option value="-1 month">1 month</option>
-                <option value="-3 month">3 months</option>
-                <option value="-6 month">6 months</option>
-                <option value="-12 month">12 months</option>
-              </b-select>
+              <div style="padding: 6px 10px 0 0; margin-left: 30px;">
+                <b-select
+                  placeholder="Moment"
+                  rounded
+                  icon="calendar"
+                  v-model="realtimeOptions.moment.value"
+                  @input="onRealtimeMomentChanged"
+                >
+                  <option value="-5 minute">5 minutes</option>
+                  <option value="-30 minute">30 minutes</option>
+                  <option value="-1 hour">1 hour</option>
+                  <option value="-1 day">1 day</option>
+                  <option value="-7 day">7 days</option>
+                  <option value="-15 day">15 days</option>
+                  <option value="-1 month">1 month</option>
+                  <option value="-3 month">3 months</option>
+                  <option value="-6 month">6 months</option>
+                  <option value="-12 month">12 months</option>
+                </b-select>
               </div>
-            </p>
+            </div>
           </header>
           <div class="card-content">
             <div class="content">
-              <ALineChart :height="220" :options="realtimeOptions"/>
+              <ALineChart :height="220" :options="realtimeOptions" />
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
           </header>
           <div class="card-content">
             <div class="content">
-              <ALineChart :height="220" :options="allSensorsOptions"/>
+              <ALineChart :height="220" :options="allSensorsOptions" />
             </div>
           </div>
         </div>
@@ -108,66 +108,103 @@ export default {
     return {
       temperatureOptions: {
         title: ["Temperature"],
+        legends: {
+          enabled: false          
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        },
         request: {
           url: "/api/data/out/random",
           data: {
             amount: 10,
             datasets: 1,
             min_value: 1,
-            max_value: 20,
-            format_dt: "%H:%M:%S"
+            max_value: 20
           }
         }
       },
       humidityOptions: {
         title: ["Humidity"],
+        legends: {
+          enabled: false          
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        },
         request: {
           url: "/api/data/out/random",
           data: {
             amount: 10,
             datasets: 1,
             min_value: 1,
-            max_value: 20,
-            format_dt: "%H:%M:%S"
+            max_value: 20
           }
         }
       },
       soilOptions: {
         title: ["Soil"],
+        legends: {
+          enabled: false          
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        },
         request: {
           url: "/api/data/out/random",
           data: {
             amount: 10,
             datasets: 1,
             min_value: 1,
-            max_value: 20,
-            format_dt: "%H:%M:%S"
+            max_value: 20
           }
         }
       },
       allSensorsOptions: {
         title: ["Temperature", "Humidity", "Soil"],
+        legends: {
+          enabled: true          
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        },
         request: {
           url: "/api/data/out/random",
           data: {
             amount: 20,
             datasets: 3,
             min_value: 1,
-            max_value: 20,
-            format_dt: "%H:%M:%S"
+            max_value: 20
           }
         }
       },
       realtimeOptions: {
         title: ["Temperature", "Humidity", "Soil"],
+        legends: {
+          enabled: false          
+        },
+        labels: {
+          enabled: true,
+          type: "datetime",
+          format: "H:mm:ss"
+        },
         request: {
           url: "/api/data/out/device",
           data: {
-            device_token: "test",
+            device_token: "device-test-token",
             type: "temperature",
+            amount: 20,
             start_dt: null,
             end_dt: null,
-            format_dt: "%H:%M:%S"
+            order: "asc"
           }
         },
         interval: 2000,

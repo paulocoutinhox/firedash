@@ -1,10 +1,14 @@
 <template>
   <div>
-    <app-logo title="Account - View"/>
+    <app-logo title="Account - View" />
 
     <section class="section section-padding">
       <p class="has-text-weight-bold">Name:</p>
       <p>{{ formData.name }}</p>
+      <div class="formViewSeparator"></div>
+
+      <p class="has-text-weight-bold">Token:</p>
+      <p>{{ formData.token }}</p>
       <div class="formViewSeparator"></div>
 
       <p class="has-text-weight-bold">E-mail:</p>

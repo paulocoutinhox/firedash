@@ -31,6 +31,7 @@ def action_create(account):
         new_account = Account()
 
         new_account.name = form.name.data
+        new_account.token = form.token.data
         new_account.email = form.email.data
         new_account.photo_url = form.photo_url.data
         new_account.is_admin = form.is_admin.data
@@ -66,6 +67,7 @@ def action_update(account):
 
         if found_account:
             found_account.name = form.name.data
+            found_account.token = form.token.data
             found_account.email = form.email.data
             found_account.photo_url = form.photo_url.data
             found_account.is_admin = form.is_admin.data

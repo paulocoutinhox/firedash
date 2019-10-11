@@ -1,9 +1,11 @@
-import time
+import calendar
 from datetime import datetime, timedelta
 
-from app.app_data import db
 from flask import Blueprint, request
 from flask_json import as_json
+from sqlalchemy import desc, asc
+
+from app.app_data import db
 from models.domain.device import Device
 from models.domain.device_data import DeviceData
 from models.form.device_data.device_data_create import DeviceDataCreateForm
@@ -60,12 +62,22 @@ def action_data_out_by_device():
         device = Device.query.filter(Device.token == form.device_token.data).first()
 
         if device:
-            items = DeviceData.query.filter(
-                DeviceData.device_id == device.id,
-                DeviceData.type == form.type.data,
-                DeviceData.created_at >= form.start_dt.data,
-                DeviceData.created_at <= form.end_dt.data,
-            ).all()
+            if form.order.data == "asc":
+                order_by = asc(DeviceData.created_at)
+            else:
+                order_by = desc(DeviceData.created_at)
+
+            items = (
+                DeviceData.query.filter(
+                    DeviceData.device_id == device.id,
+                    DeviceData.type == form.type.data,
+                    DeviceData.created_at >= form.start_dt.data,
+                    DeviceData.created_at <= form.end_dt.data,
+                )
+                .order_by(order_by)
+                .limit(form.amount.data)
+                .all()
+            )
 
             if items:
                 if form.format_dt.data:
@@ -75,7 +87,10 @@ def action_data_out_by_device():
                     )
                 else:
                     labels = map(
-                        lambda item: time.mktime(item.created_at.timetuple()), items
+                        lambda item: int(
+                            calendar.timegm(item.created_at.timetuple()) * 1000
+                        ),
+                        items,
                     )
 
                 items = map(lambda item: item.value, items)

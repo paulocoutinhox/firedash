@@ -2,7 +2,7 @@
   <nav class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link to="/" class="navbar-item">
-        <img src="@/assets/images/logo.png" alt="Firedash" style="margin-right: 10px;">
+        <img src="@/assets/images/logo.png" alt="Firedash" style="margin-right: 10px;" />
         Firedash
       </router-link>
 
@@ -27,7 +27,12 @@
         v-if="!isLoggedIn"
       >Login</router-link>
 
-      <a v-on:click="logout" v-on:click.native="closeMenu()" class="navbar-item is-tab" v-if="isLoggedIn">Logout</a>
+      <a
+        v-on:click="logout"
+        v-on:click.native="closeMenu()"
+        class="navbar-item is-tab"
+        v-if="isLoggedIn"
+      >Logout</a>
     </div>
   </nav>
 </template>
@@ -56,7 +61,9 @@ export default {
       this.menuActive = false;
     },
     logout: function() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/");
+      });
     }
   }
 };

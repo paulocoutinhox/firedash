@@ -18,10 +18,10 @@ def account_auth_token_required(func=None, *, export=True):
         verify_jwt_in_request()
         claims = get_jwt_claims()
 
-        account_id = claims.get("account_id", 0)
+        account_token = claims.get("account_token", None)
 
-        if account_id > 0:
-            account = Account.query.get(account_id)
+        if account_token:
+            account = Account.query.filter(Account.token == account_token).first()
 
             if account:
                 if export:
